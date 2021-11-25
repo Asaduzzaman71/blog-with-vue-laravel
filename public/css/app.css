@@ -1,0 +1,83 @@
+
+
+html,body{
+    margin:0%;
+}
+
+/*------------- Css variable------------- */
+
+:root{
+
+    /* theme color from color.co */
+  --text-gray:#808080;
+  --text-light:#686666da;
+  --bg-color:#0f0f0f;
+  --white:#ffffff;
+  --midnight:#104f55;
+  --heading-black:#000000;
+
+
+  /* gradient color from webgradient.com */
+  --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+
+    /* theme font-family */
+  --Abel:'Abel';
+  --Anton:'Anton';
+  --Josefin:'Josefin';
+  --Lexend:'Lexend';
+  --Livvic:'Livvic';
+  --serif:'sans-serif';
+}
+/*---------End of  Css variable --------*/
+
+/*---------------- Global classes---------- */
+
+a{
+    text-decoration:none;
+    color:var(--text-gray);
+    font-family: var(--serif);
+ }
+
+ul{
+    list-style-type: none;
+}
+
+h1{
+    font-family: var(--Lexend);
+    font-size: 2.5rem;
+}
+h2{
+    font-family: var(--serif);
+    color: var(--heading-black);
+}
+h3{
+    font-family: var(--Abel);
+    font-size: 1.3rem;
+}
+button.btn {
+    border: none;
+    border-radius: 2rem;
+    padding:1rem 3rem;
+    font-size:1rem;
+    font-family: var(--Livvic);
+    cursor:pointer;
+
+}
+span{
+    font-family: var(--Abel);
+}
+
+
+.text-gray{
+    color: var(--text-gray);
+}
+
+p{
+    font-family: var(--Lexend);
+    color: var(--text-light);
+}
+
+
+/*------------- End of Global classes---------- */
+
+
