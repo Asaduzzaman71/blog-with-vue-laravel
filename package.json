@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21",
+        "axios": "^0.21.4",
         "graphql": "^15.7.1",
         "graphql-tag": "^2.12.5",
         "laravel-mix": "^6.0.6",
@@ -27,7 +27,7 @@
         "vue-axios": "^3.3.7",
         "vue-carousel": "^0.18.0",
         "vue-router": "^4.0.12",
-        "vue-slick-carousel": "^1.0.6",
-        "vue-spinner": "^1.0.4"
+        "vue-spinner": "^1.0.4",
+        "vue3-carousel": "^0.1.30"
     }
 }

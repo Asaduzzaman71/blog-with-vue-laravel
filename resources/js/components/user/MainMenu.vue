@@ -13,6 +13,8 @@
     <div class="top-posts">
         <TopPost />
     </div>
+
+
 </div>
 
 </template>
@@ -79,5 +81,7 @@ export default {
     z-index: 1;
 
 }
+
+
 
 </style>
