@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="left-menu-list-container">
         <ul  ref="category"  class="left-menu-list">
             <li  v-for="(category,index) in categories" v-bind:key="index"    @mouseover="changeIcon(category,$event)"  @mouseout="hover=false" :class="{ active: hover }"  ><a href="" ><span>{{category}} <i  :class="category == visible ? icon : 'hidden'"></i> </span></a> </li>
         </ul>
@@ -37,7 +37,7 @@ export default {
 
 
 <style scoped>
-.container{
+.left-menu-list-container{
     width: 150px;
     background: skyblue;
 }
@@ -55,6 +55,10 @@ export default {
 .left-menu-list li {
     padding: .5rem 1rem;
     text-align: center;
+}
+
+.left-menu-list li a{
+    text-decoration: none;
 }
 
 .left-menu-list li a span{

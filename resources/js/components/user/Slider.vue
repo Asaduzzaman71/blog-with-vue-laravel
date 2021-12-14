@@ -5,7 +5,7 @@
                 <div class="slider-post-wrapper">
                     <div class="item-image">
                         <i class="fa fa-camera"></i>
-                        <a href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html" class="travel-post-image"></a>
+                        <a href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html" ><img :src ="sliderImageSrc" class="travel-post-image"></a>
                     </div>
                     <div class="slider-post-topinfo">
                         <div class="cat-title">
@@ -28,19 +28,19 @@
 
 <script scoped>
 import 'vue3-carousel/dist/carousel.css';
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
+import { Carousel, Slide,  Navigation } from 'vue3-carousel';
 export default {
     name:"Slider",
     data() {
       return {
-
+            sliderImageSrc:'../assets/user/images/strawberry.jpg',
       }
     },
     components: {
         Carousel,
         Slide,
-        Pagination,
         Navigation,
+
     },
 }
 </script>
@@ -94,7 +94,7 @@ export default {
 
 }
 .travel-post-image{
-    background:url('/assets/images/strawberry.jpg') no-repeat center center;
+    background: no-repeat center center;
     background-size: cover;
     height: 400px;
     width: 600px;

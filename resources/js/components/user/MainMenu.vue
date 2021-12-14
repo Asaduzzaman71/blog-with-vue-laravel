@@ -1,9 +1,9 @@
 <template>
-<div class="container">
+<div class="main-menu-container">
     <div class="main-menu">
         <ul class="main-menu-list" >
             <li><a href="/" class="">Home</a></li>
-            <li><a  v-on:click="toggle = !toggle" class="menu-target" href="#">Category<i class="fa fa-caret-down"></i></a></li>
+            <li><a  v-on:click="toggle = !toggle"  href="#">Category  <i class="fa fa-caret-down"></i></a></li>
         </ul>
     </div>
     <div  v-show="toggle" class="main-sub-menu">
@@ -27,7 +27,6 @@ export default {
     data () {
         return {
             toggle: false,
-
         }
     },
     components: {RightMenuList,LeftMenuList,TopPost},
@@ -35,7 +34,7 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.main-menu-container{
    position: relative;
    width:1000px;
    margin: 0 auto;
@@ -51,8 +50,11 @@ export default {
     display: flex;
     justify-content: center;
 }
+.main-menu .main-menu-list li{
+    padding-top: .5rem;
+}
 .main-menu .main-menu-list .menu-target i{
-    padding: 0 .5rem;
+    padding: .5rem .5rem;
 
 }
 
@@ -62,7 +64,8 @@ export default {
     font-weight: 600;
     letter-spacing: 0px;
     font-size: 20px;
-    color:black
+    color:black;
+    text-decoration:none;
 
 }
 .main-sub-menu{

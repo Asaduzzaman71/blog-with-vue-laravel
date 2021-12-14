@@ -1,11 +1,12 @@
 <template>
-    <div class='container'>
+    <div class='top-post-container'>
         <Slider />
         <div class="right-side-grid">
             <div class="right-side-top-post-wrapper">
                 <div class="item-image">
                     <i class="fa fa-camera"></i>
-                    <a href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html" class="fashion-post-image"></a>
+                    <a href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html" > <img :src ="fashion_image_src" class="fashion-post-image"> </a>
+
                 </div>
                 <div class="right-side-top-post-topinfo">
                     <div class="cat-title">
@@ -20,7 +21,7 @@
                 <div class="right-side-bottom-left-post-wrapper">
                     <div class="item-image">
                         <i class="fa fa-camera"></i>
-                        <a  href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html" class="lifestyle-post-image"></a>
+                        <a  href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html" ><img :src ="life_style_image_src" class="lifestyle-post-image"></a>
                     </div>
                     <div class="right-side-bottom-left-post-topinfo">
                         <div class="cat-title">
@@ -34,7 +35,7 @@
                 <div class="right-side-bottom-right-post-wrapper">
                     <div class="item-image">
                         <i class="fa fa-camera"></i>
-                        <a href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html" class="beauty-post-image"></a>
+                        <a href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html"  > <img :src ="beauty_image_src" class="beauty-post-image"></a>
                     </div>
                     <div class="right-side-bottom-right-post-topinfo">
                         <div class="cat-title">
@@ -58,14 +59,16 @@ export default {
     components: {Slider},
     data() {
         return {
-
+            fashion_image_src : '../assets/user/images/music.jpg',
+            life_style_image_src :'../assets/user/images/food.jpg',
+            beauty_image_src : '../assets/user/images/fashion.jpg',
         }
     },
 }
 </script>
 
 <style scoped>
-.container{
+.top-post-container{
     display: flex;
     justify-content: space-between;
     width:1000px;
@@ -125,7 +128,7 @@ export default {
     position:relative;
 }
 .fashion-post-image{
-    background:url('/assets/images/music.jpg') no-repeat center center;
+    background: no-repeat center center;
     background-size: cover;
     width: 400px;
     height: 200px;
@@ -146,14 +149,14 @@ export default {
     display: flex;
 }
 .lifestyle-post-image{
-    background:url('/assets/images/food.jpg') no-repeat center center;
+    background: no-repeat center center;
     background-size: cover;
     width: 200px;
     height: 200px;
     display:block;
 }
 .beauty-post-image{
-    background:url('/assets/images/fashion.jpg') no-repeat center center;
+    background: no-repeat center center;
     background-size: cover;
     width: 200px;
     height: 200px;

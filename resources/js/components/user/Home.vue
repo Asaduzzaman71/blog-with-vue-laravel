@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="home-container">
         <Header />
         <br>
         <br>
@@ -13,7 +13,7 @@
                 <div class="single-popular-post">
 
                     <div class="popular-post-img">
-                        <img src="/assets/images/music.jpg">
+                        <img src="/assets/user/images/music.jpg">
                     </div>
                     <div class="popular-post-title">
                         <a href="https://perfection-oddthemes.blogspot.com/2017/09/chair-trick-performed-by-this-bearded.html" title="Chair trick performed by this bearded man">Chair trick performed by this bearded man</a>

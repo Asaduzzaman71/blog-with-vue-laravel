@@ -2,7 +2,7 @@
     <div class="all-posts">
         <div class="single-post">
             <div class="post-img">
-                <img src="/assets/images/music.jpg">
+                <img src="/assets/user/images/music.jpg">
             </div>
             <div class="post-info">
                 <div class="item-title">
@@ -23,7 +23,7 @@
         </div>
         <div class="single-post">
             <div class="post-img">
-                <img src="/assets/images/music.jpg">
+                <img src="/assets/user/images/music.jpg">
             </div>
             <div class="post-info">
                 <div class="item-title">
@@ -44,7 +44,7 @@
         </div>
         <div class="single-post">
             <div class="post-img">
-                <img src="/assets/images/music.jpg">
+                <img src="/assets/user/images/music.jpg">
             </div>
             <div class="post-info">
                 <div class="item-title">
@@ -65,7 +65,7 @@
         </div>
         <div class="single-post">
             <div class="post-img">
-                <img src="/assets/images/music.jpg">
+                <img src="/assets/user/images/music.jpg">
             </div>
             <div class="post-info">
                 <div class="item-title">
@@ -86,7 +86,7 @@
         </div>
         <div class="single-post">
             <div class="post-img">
-                <img src="/assets/images/music.jpg">
+                <img src="/assets/user/images/music.jpg">
             </div>
             <div class="post-info">
                 <div class="item-title">

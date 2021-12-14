@@ -1,16 +1,16 @@
 <template>
-   <div class="container">
-        <nav class="nav">
-            <div class="nav-menu">
-                <ul class="nav-items">
-                    <li class="nav-item">
-                        <router-link to="/" class="nav-link">Home</router-link>
+   <div class="header-container">
+        <nav class="navigation">
+            <div class="navigation-menu">
+                <ul class="navigation-items">
+                    <li class="navigation-item">
+                        <router-link to="/" class="navigation-link">Home</router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link to="/about" class="nav-link">About</router-link>
+                    <li class="navigation-item">
+                        <router-link to="/about" class="navigation-link">About</router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link to="/contact" class="nav-link">Contact</router-link>
+                    <li class="navigation-item">
+                        <router-link to="/contact" class="navigation-link">Contact</router-link>
                     </li>
                 </ul>
 
@@ -41,7 +41,7 @@
         name:'Header',
         data(){
                 return {
-                    image_src: '/assets/images/perfection2.png',
+                    image_src: '../assets/user/images/perfection2.png',
                 }
             },
 
@@ -49,31 +49,31 @@
 </script>
 
 <style scoped>
-    .nav{
+    .navigation{
         display: flex;
         background: #4068AD;
         margin:auto;
         width: 100%;
     }
-    .nav-menu .nav-items{
+    .navigation-menu .navigation-items{
         display: flex;
         list-style: none;
         padding: .3rem 1.1rem;
 
     }
 
-    .nav-menu .nav-items .nav-item{
+    .navigation-menu .navigation-items .navigation-item{
         padding: .5rem 1.2rem;
     }
-    .nav-menu .nav-items .nav-item .nav-link{
+    .navigation-menu .navigation-items .navigation-item .navigation-link{
         text-decoration: none;
         color:white;
     }
 
-    .nav  .topsocial{
+    .navigation  .topsocial{
         margin-left: 45rem;
     }
-    .nav  .topsocial i{
+    .navigation  .topsocial i{
         padding: 1.8rem .6rem;
         color:white;
         text-decoration: none;

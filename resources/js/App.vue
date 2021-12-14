@@ -1,16 +1,13 @@
 <template>
-    <div class="container">
-
-
+    <div>
         <router-view> </router-view>
     </div>
 </template>
 
 <script>
 import Home from './components/user/Home.vue';
-import Dashboard from './components/admin/Dashboard.vue';
     export default {
-        components:{Home,Dashboard},
+        components:{ Home },
 
     }
 </script>

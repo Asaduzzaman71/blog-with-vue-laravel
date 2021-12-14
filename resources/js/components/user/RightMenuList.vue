@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="right-menu-list-container">
         <ul class="right-menu-list" style="min-height: 200px;">
             <li>
                 <span class="thumb-container">
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.right-menu-list-container{
     width: 650px;
     padding-left: 0px;
 }

@@ -2,7 +2,7 @@
     <div class="post">
         <div class="single-post">
             <div class="post-img">
-                <img src="/assets/images/strawberry.jpg">
+                <img src="/assets/user/images/strawberry.jpg">
             </div>
             <div class="post-info">
                 <div class="item-title">
