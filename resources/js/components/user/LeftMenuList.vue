@@ -7,11 +7,9 @@
 </template>
 
 <script>
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 export default {
     name:"LeftMenuList",
     components: {
-        PulseLoader
     },
     data () {
             return {

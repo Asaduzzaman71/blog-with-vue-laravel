@@ -22,7 +22,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="offset-10 col-sm-2">
-                            <button type="button" class="btn-primary" @click="openModal()">Add category</button>
+                            <button type="button" class="btn-primary" @click="openCreateModal()">Add category</button>
                         </div>
                     </div>
                     <div class="row">
@@ -38,54 +38,74 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>john@example.com</td>
+                                        <tr v-for="(category,index) in categories" :key="category.id">
+                                            <td>{{index+1}}</td>
+                                            <td>{{category.name}}</td>
+                                            <td>{{category.name}}</td>
+                                            <td>{{category.name}}</td>
+                                            <td><button type="button" class="btn-danger" @click="deleteCategory({...category})"><i class="fa fa-trash"></i></button><button type="button" class="btn-primary" @click="openEditModal({...category})"><i class="fa fa-edit"></i></button></td>
                                         </tr>
-                                        <tr>
-                                            <td>Mary</td>
-                                            <td>Moe</td>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>mary@example.com</td>
-                                        </tr>
-                                        <tr>
-                                            <td>July</td>
-                                            <td>Dooley</td>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>july@example.com</td>
-                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
-                      <form @submit.prevent="addCategory()">
-                    <Modal v-show="visible" @close="close">
-                        <template v-slot:header> <h6>Add Category</h6> </template>
+                    <form @submit.prevent=" editMode ? editCategory():addCategory()">
+                        <Modal v-if="createMode" @close="close">
+                            <template v-slot:header> <h6 v-if="createMode">Add Category</h6></template>
 
-                        <template v-slot:body>
-
-                                    <div class="card-body">
-                                        <div class="form-group mb-3">
-                                            <label for="name">Category Title</label>
-                                            <input type="name" class="form-control" id="name" placeholder="Enter Blog category name" v-model="form.name">
+                            <template v-slot:body>
+                                 <div v-if="unauthorized">
+                                    <span class="text-danger">{{ errors}} </span>
+                                </div>
+                                <div v-else>
+                                    <div v-for="(errorArray, index) in errors" :key="index">
+                                        <div v-for="(allErrors, index) in errorArray" :key="index">
+                                            <span class="text-danger">{{ allErrors}} </span>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group mb-3">
+                                        <label for="name">Category Title</label>
+                                        <input type="name" class="form-control" id="name" placeholder="Enter Blog category name" v-model="form.name">
+                                    </div>
+                                </div>
+                            </template>
 
+                            <template v-slot:footer>
+                                <button type="submit" class="btn-primary">Submit</button>
+                            </template>
+                        </Modal>
+                        <Modal v-if="editMode" @close="close">
+                            <template v-slot:header><h6 v-if="editMode">Edit Category</h6> </template>
 
-                        </template>
+                            <template v-slot:body>
+                                 <div v-if="unauthorized">
+                                    <span class="text-danger">{{ errors}} </span>
+                                </div>
+                                <div v-else>
+                                    <div v-for="(errorArray, index) in errors" :key="index">
+                                        <div v-for="(allErrors, index) in errorArray" :key="index">
+                                            <span class="text-danger">{{ allErrors}} </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group mb-3">
+                                        <label for="name">Category Title</label>
+                                        <input type="name" class="form-control" id="name" placeholder="Enter Blog category name" v-model="form.name">
+                                    </div>
+                                </div>
+                            </template>
 
-                        <template v-slot:footer>
-                            <button type="submit" class="btn-primary">Submit</button>
-                        </template>
-                    </Modal>
-                     </form>
+                            <template v-slot:footer>
+                                <button type="submit" class="btn-primary">Submit</button>
+                            </template>
+                        </Modal>
+                    </form>
                 </div>
             </section>
         </div>
@@ -104,39 +124,147 @@ export default {
     data () {
         return {
             isActive: false,
-            visible: false,
+            createMode: false,
+            editMode:false,
             form:{
+                id:null,
                 name: '',
             },
+            categories:[],
             errors:[],
+            unauthorized: false
         }
     },
+    created() {
+            const token = (localStorage.getItem('access-token'));
+            axios.get('/api/admin/categories',{
+                    headers: {
+                        authorization: "Bearer " + token
+                    }
+                })
+                .then(response => {
+                    this.categories = response.data.results;
+
+                });
+        },
     methods: {
+        changeIsActiveValue(IsActiveValue) {
+            this.isActive=IsActiveValue;
+        },
+        openCreateModal() {
+            this.createMode = true;
+        },
+        openEditModal(category) {
+            this.form=[];
+            this.createMode = false;
+            this.editMode = true;
+            this.form=category;
+        },
+        close() {
+            this.createMode = false;
+            this.editMode=false;
+             this.form=false;
+        },
 
         addCategory() {
-            alert('hi');
             const token = (localStorage.getItem('access-token'));
             axios.post('/api/admin/categories', this.form,{
             headers: {
                 authorization: "Bearer " + token
             }
             }).then((response) =>{
-                this.$router.push({ name: "dashboard"});
-
+                this.categories.push(response.data.results);
+                this.createMode=false;
+                this.errors=[];
+                this.unauthorized = false;
             }).catch((error) =>{
-                this.errors = error.response.data.error;
+                console.log(error.response.data.errors);
+                if(error.response.status == 422){
+                    this.unauthorized = false;
+                    this.errors = error.response.data.errors;
+
+                }
+                else if(error.response.status == 401){
+                    this.unauthorized = true;
+                    this.errors = error.response.data.error;
+                }
             })
         },
-        changeIsActiveValue(IsActiveValue)
-        {
-            this.isActive=IsActiveValue;
+        editCategory(){
+            const token = (localStorage.getItem('access-token'));
+            axios.put('/api/admin/categories/'+this.form.id, this.form,{
+            headers: {
+                authorization: "Bearer " + token
+            }
+            }).then((response) =>{
+                this.categories.find((item,index)=>{
+                    if(item.id==response.data.results.id){
+                        this.categories.splice(index,1,response.data.results);
+                    }
+                })
+                this.editMode=false;
+                this.errors=[];
+                this.unauthorized = false;
+            }).catch((error) =>{
+                console.log(error.response.data.errors);
+                if(error.response.status == 422){
+                    this.unauthorized = false;
+                    this.errors = error.response.data.errors;
+
+                }
+                else if(error.response.status == 401){
+                    this.unauthorized = true;
+                    this.errors = error.response.data.error;
+                }
+            })
         },
-        openModal() {
-        this.visible = true;
+
+        deleteCategory(category){
+
+            this.$swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+
+                    const token = (localStorage.getItem('access-token'));
+                    axios.delete('/api/admin/categories/'+category.id,{
+                    headers: {
+                        authorization: "Bearer " + token
+                    }
+                    }).then((response) =>{
+                        this.$swal(
+                            'Deleted!',
+                            'Category has been deleted.',
+                            'success'
+                            )
+                        this.categories.find((item,index)=>{
+                            if(item.id==response.data.results.id){
+                                this.categories.splice(index,1);
+                            }
+                        })
+                        this.errors=[];
+                        this.unauthorized = false;
+                    }).catch((error) =>{
+                        console.log(error.response);
+                        if(error.response.status == 422){
+                            this.unauthorized = false;
+                            this.errors = error.response.data.errors;
+
+                        }
+                        else if(error.response.status == 404){
+                            this.unauthorized = true;
+                            this.errors = error.response.data.error;
+                        }
+                    })
+                })
+
         },
-        close() {
-        this.visible = false;
-        },
+
     }
 
 
@@ -263,6 +391,14 @@ button.btn-primary{
     color: white;
     background: blue;
     border: 1px solid blue;
+    border-radius: 4px;
+    margin: 20px 5px;
+    padding: 5px 10px;
+}
+button.btn-danger{
+    color: white;
+    background: red;
+    border: 1px solid red;
     border-radius: 4px;
     margin: 20px 5px;
     padding: 5px 10px;

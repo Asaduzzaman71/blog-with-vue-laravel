@@ -31,9 +31,11 @@ Route::group([
 Route::group( ['prefix' => 'admin','middleware' => 'jwt.verify'], function()
 {
     Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/categories/{id}', [CategoryController::class, 'index']);
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/categories/{id}', [CategoryController::class, 'show']);
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{id}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
