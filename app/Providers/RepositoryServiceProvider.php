@@ -15,7 +15,11 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             'App\Interfaces\CategoryInterface',
-            'App\Repositories\CategoryRepository'
+            'App\Repositories\CategoryRepository',
+        );
+        $this->app->bind(
+            'App\Interfaces\PostInterface',
+            'App\Repositories\PostRepository'
         );
     }
 

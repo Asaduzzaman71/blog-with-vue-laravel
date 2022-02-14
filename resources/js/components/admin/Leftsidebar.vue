@@ -7,12 +7,12 @@
 
         <ul class="list-unstyled components">
             <li>
-                <a href="#homeSubmenu"  data-bs-toggle="collapse" aria-expanded="false" ><i class="fa fa-list right-padding"></i>Post Category<i class="fa fa-angle-down left-padding" aria-hidden="true" ></i></a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li><a href="#">All categories</a></li>
-                    <li><a href="#">Create Category</a></li>
-                    <li><a href="#">Edit Category</a></li>
-                </ul>
+                <router-link to="/categories"   data-bs-toggle="collapse" aria-expanded="false"><i class="fa fa-list right-padding"></i>Post Category</router-link>
+
+            </li>
+             <li>
+                <router-link to="/posts"   data-bs-toggle="collapse" aria-expanded="false"><i class="fa fa-list right-padding"></i>Posts</router-link>
+
             </li>
             <li>
                 <a href="#pageSubmenu"  data-bs-toggle="collapse" aria-expanded="false" >Pages<i class="fa fa-angle-down left-padding" aria-hidden="true"></i></a>

@@ -13,7 +13,7 @@ class PostRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
+            // I want to check the name if exists first
+            // If exists, will pass the name for unique validation
+            // This is efficient, rather than we creating another validation for create or update
+            'title' => 'required |unique:posts|max:255',
+            'excerpt' => 'required',
+            'content' => 'required',
         ];
     }
 }

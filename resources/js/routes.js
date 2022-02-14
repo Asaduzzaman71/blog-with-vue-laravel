@@ -5,8 +5,25 @@ import About from './components/user/About.vue';
 import Dashboard from './pages/Dashboard.vue';
 import Login from './pages/Login.vue';
 import Category from './pages/Category.vue';
+import Post from './pages/Post.vue';
 
+function guardMyroute(to, from, next)
+{
+    var isAuthenticated= false;
 
+    if(localStorage.getItem('access-token')){
+        isAuthenticated = true;
+    }else{
+        isAuthenticated= false;
+    }
+
+    if(isAuthenticated){
+        next(); // allow to enter route
+    }
+    else{
+        next('/login'); // go to '/login';
+    }
+}
 export const routes = [
     {
         name: 'home',
@@ -41,7 +58,15 @@ export const routes = [
     {
         name: 'categories',
         path: '/categories',
+        beforeEnter : guardMyroute,
         component: Category
+
+    },
+    {
+        name: 'posts',
+        path: '/posts',
+        beforeEnter : guardMyroute,
+        component: Post
     },
 
 ];

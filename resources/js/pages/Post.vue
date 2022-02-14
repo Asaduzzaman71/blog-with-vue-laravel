@@ -12,7 +12,7 @@
                         <div class="col-sm-2">
                             <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Category</li>
+                            <li class="breadcrumb-item active">Post</li>
                             </ol>
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="offset-10 col-sm-2">
-                            <button type="button" class="btn-primary" @click="openCreateModal()">Add category</button>
+                            <button type="button" class="btn-primary" @click="openCreateModal()">Create post</button>
                         </div>
                     </div>
                     <div class="row">
@@ -32,18 +32,18 @@
                                     <thead>
                                         <tr>
                                             <th>Sl#</th>
-                                            <th>Category name</th>
-                                            <th>Status</th>
+                                            <th>Title</th>
+                                            <th>Image</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(category,index) in categories" :key="category.id">
+                                        <tr v-for="(post,index) in posts" :key="post.id">
                                             <td>{{index+1}}</td>
-                                            <td>{{category.name}}</td>
-                                            <td>{{category.name}}</td>
-                                            <td>{{category.name}}</td>
-                                            <td><button type="button" class="btn-danger" @click="deleteCategory({...category})"><i class="fa fa-trash"></i></button><button type="button" class="btn-primary" @click="openEditModal({...category})"><i class="fa fa-edit"></i></button></td>
+                                            <td>{{post.title}}</td>
+                                            <td>{{post.title}}</td>
+                                            <td>{{post.title}}</td>
+                                            <td><button type="button" class="btn-danger" @click="deleteCategory({...post})"><i class="fa fa-trash"></i></button><button type="button" class="btn-primary" @click="openEditModal({...post})"><i class="fa fa-edit"></i></button></td>
                                         </tr>
 
                                     </tbody>
@@ -51,10 +51,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <form @submit.prevent=" editMode ? editCategory():addCategory()">
+                    <form @submit.prevent=" editMode ? editPost():addPost()" enctype="multipart/form-data">
                         <Modal v-if="createMode" @close="close">
-                            <template v-slot:header> <h6 v-if="createMode">Add Category</h6></template>
+                            <template v-slot:header> <h6 v-if="createMode">Create Post</h6></template>
 
                             <template v-slot:body>
                                  <div v-if="unauthorized">
@@ -69,8 +68,74 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group mb-3">
-                                        <label for="name">Category Title</label>
-                                        <input type="name" class="form-control" id="name" placeholder="Enter Blog category name" v-model="form.name">
+                                        <label for="name">Post Title</label>
+                                        <input type="name" class="form-control" id="name" placeholder="Enter post title" v-model="title">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <div>Choose post category</div>
+                                        <select  v-model="category_id"  id="category_list">
+                                            <option  v-for="category in categories" :key="category.id" :value="category.id">
+                                                {{category.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="excerpt">Excerpt</label>
+                                        <input type="excerpt" class="form-control" id="excerpt" placeholder="Enter post title" v-model="excerpt">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="name">Description</label>
+                                        <QuillEditor v-model:content="content"  contentType="html" theme="snow" toolbar="#custom-toolbar"  @change="onEditorChange($event)">
+                                            <template #toolbar>
+                                            <div id="custom-toolbar">
+                                                <select class="ql-size">
+                                                <option value="small"></option>
+                                                <option selected></option>
+                                                <option value="large"></option>
+                                                <option value="huge"></option>
+                                                </select>
+                                                <select class="ql-header">
+                                                <option :value="1"></option>
+                                                <option :value="2"></option>
+                                                <option :value="3"></option>
+                                                <option :value="4"></option>
+                                                <option :value="5"></option>
+                                                <option :value="6"></option>
+                                                <option selected></option>
+                                                </select>
+                                                <button class="ql-bold"></button>
+                                                <button class="ql-italic"></button>
+                                                <button class="ql-underline"></button>
+                                                <button class="ql-strike"></button>
+                                                <button class="ql-script" value="sub"></button>
+                                                <button class="ql-script" value="super"></button>
+                                                <select class="ql-align">
+                                                <option selected></option>
+                                                <option value="center"></option>
+                                                <option value="right"></option>
+                                                <option value="justify"></option>
+                                                </select>
+                                                <button class="ql-list" value="ordered"></button>
+                                                <button class="ql-list" value="bullet"></button>
+                                                <button class="ql-blockquote"></button>
+                                                <button class="ql-code-block"></button>
+                                                <button class="ql-link"></button>
+                                                <button class="ql-image"></button>
+
+                                                <button id="your-button" @click="setContent()">Save</button>
+                                            </div>
+                                            </template>
+                                        </QuillEditor>
+                                    </div>
+                                    <div  class="image-preview-container">
+                                        <div v-for="(previewFile, key) in previewFiles" :key="key">
+                                            <img class="preview" :src=previewFile  />
+                                        </div>
+                                    </div>
+                                     <div class="form-group mb-3">
+
+                                        <input type="file" style="display:none" multiple accept="image/*" @change="onFileChange" ref="fileInput"/>
+                                        <button @click.prevent="$refs.fileInput.click()">Choose Image</button>
                                     </div>
                                 </div>
                             </template>
@@ -83,7 +148,7 @@
                             </template>
                         </Modal>
                         <Modal v-if="editMode" @close="close">
-                            <template v-slot:header><h6 v-if="editMode">Edit Category</h6> </template>
+                            <template v-slot:header><h6 v-if="editMode">Edit Post</h6> </template>
 
                             <template v-slot:body>
                                  <div v-if="unauthorized">
@@ -98,8 +163,8 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group mb-3">
-                                        <label for="name">Category Title</label>
-                                        <input type="name" class="form-control" id="name" placeholder="Enter Blog category name" v-model="form.name">
+                                        <label for="name">Post Title</label>
+                                        <input type="title" class="form-control" id="title" placeholder="Enter post title" v-model="title">
                                     </div>
                                 </div>
                             </template>
@@ -114,6 +179,8 @@
                             </template>
                         </Modal>
                     </form>
+
+
                 </div>
             </section>
         </div>
@@ -126,26 +193,43 @@ import axios from "axios";
 import Leftsidebar from '../components/admin/Leftsidebar.vue';
 import Header from '../components/admin/Header.vue';
 import Modal from "../components/admin/Modal.vue";
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 export default {
-    name:"Category",
-    components: {Leftsidebar,Header,Modal },
+    name:"Post",
+    components: {Leftsidebar,Header,Modal,QuillEditor },
     data () {
         return {
             isActive: false,
             createMode: false,
             editMode:false,
             isLoading:false,
-            form:{
-                id:null,
-                name: '',
-            },
+            title: '',
+            category_id:null,
+            content:'',
+            excerpt:'',
+            images:[],
+            posts:[],
             categories:[],
             errors:[],
-            unauthorized: false
+            unauthorized: false,
+            form:[],
+            images: [],
+            previewFiles: [],
+
         }
     },
     created() {
             const token = (localStorage.getItem('access-token'));
+            axios.get('/api/admin/posts',{
+                    headers: {
+                        authorization: "Bearer " + token,
+                    }
+                })
+                .then(response => {
+                    this.posts = response.data.results;
+
+                });
             axios.get('/api/admin/categories',{
                     headers: {
                         authorization: "Bearer " + token
@@ -153,6 +237,7 @@ export default {
                 })
                 .then(response => {
                     this.categories = response.data.results;
+                    this.category_id = this.categories[0].id;
 
                 });
         },
@@ -163,30 +248,56 @@ export default {
         openCreateModal() {
             this.createMode = true;
         },
-        openEditModal(category) {
+        openEditModal(post) {
             this.form=[];
             this.createMode = false;
             this.editMode = true;
-            this.form=category;
+            this.form=post;
         },
         close() {
             this.createMode = false;
             this.editMode=false;
-             this.form=false;
+            this.form=false;
+        },
+        onFileChange(event) {
+            const selectedFiles = event.target.files;
+             for (let i = 0; i < selectedFiles.length; i++) {
+                this.images.push(selectedFiles[i]);
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    this.previewFiles[i] = reader.result;//make base 64 encoded
+                };
+                reader.readAsDataURL(selectedFiles[i]);
+            }
         },
 
-        addCategory() {
-            this.isLoading=true;
+        addPost() {
+            this.isLoading = true;
             const token = (localStorage.getItem('access-token'));
-            axios.post('/api/admin/categories', this.form,{
+            let formData = new FormData();
+            console.log(this.title);
+            console.log(this.images);
+            formData.append('title',this.title);
+            formData.append('excerpt',this.excerpt);
+            formData.append('category_id',this.category_id);
+            formData.append('content',this.content);
+            for( var i = 0; i < this.images.length; i++ ){
+                formData.append('images[' + i + ']', this.images[i]);
+            }
+
+
+
+            axios.post('/api/admin/posts', formData,{
             headers: {
-                authorization: "Bearer " + token
+                authorization: "Bearer " + token,
+                "Content-Type": "multipart/form-data"
+
             }
             }).then((response) =>{
-                this.categories.push(response.data.results);
+                this.posts.push(response.data.results);
                 this.$swal(
                             'Updated!',
-                            'Category has been updated.',
+                            'Post has been updated.',
                             'success'
                             )
                 this.createMode=false;
@@ -208,17 +319,17 @@ export default {
                       this.isLoading = false;
                     });
         },
-        editCategory(){
+        editPost(){
             const token = (localStorage.getItem('access-token'));
             this.isLoading=true;
-            axios.put('/api/admin/categories/'+this.form.id, this.form,{
+            axios.put('/api/admin/posts/'+this.form.id, this.form,{
             headers: {
                 authorization: "Bearer " + token
             }
             }).then((response) =>{
-                this.categories.find((item,index)=>{
+                this.posts.find((item,index)=>{
                     if(item.id==response.data.results.id){
-                        this.categories.splice(index,1,response.data.results);
+                        this.posts.splice(index,1,response.data.results);
                     }
                 })
                   this.$swal(
@@ -247,7 +358,7 @@ export default {
                     });
         },
 
-        deleteCategory(category){
+        deleteCategory(post){
 
             this.$swal({
                 title: 'Are you sure?',
@@ -260,19 +371,19 @@ export default {
                 }).then((result) => {
 
                     const token = (localStorage.getItem('access-token'));
-                    axios.delete('/api/admin/categories/'+category.id,{
+                    axios.delete('/api/admin/posts/'+post.id,{
                     headers: {
                         authorization: "Bearer " + token
                     }
                     }).then((response) =>{
                         this.$swal(
                             'Deleted!',
-                            'Category has been deleted.',
+                            'post has been deleted.',
                             'success'
                             )
-                        this.categories.find((item,index)=>{
+                        this.posts.find((item,index)=>{
                             if(item.id==response.data.results.id){
-                                this.categories.splice(index,1);
+                                this.posts.splice(index,1);
                             }
                         })
                         this.errors=[];
@@ -294,7 +405,6 @@ export default {
         },
 
     }
-
 
 }
 
@@ -381,6 +491,20 @@ ul ul a {
 .right-padding{
     padding-right:.5rem;
 }
+.image-preview-container{
+      display: flex;
+      justify-content: flex-start;
+      border: 1px solid black;
+      border-radius: 2px;
+}
+.preview{
+        cursor: pointer;
+        width: 100px;
+        height: 100px;
+        background-position: center center;
+        background-size: cover;
+        margin:5px;
+    }
 
 
 
@@ -431,6 +555,8 @@ button.btn-danger{
     margin: 20px 5px;
     padding: 5px 10px;
 }
+
+
 
 
 </style>

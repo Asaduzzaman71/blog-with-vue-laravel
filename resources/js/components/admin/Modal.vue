@@ -12,8 +12,9 @@
             </main>
 
             <footer class="modal-footer">
+            <button type="button" class="btn-open-modal" @click="close" aria-label="Close Modal">Cancel</button>
             <slot name="footer"> Default Footer! </slot>
-            <button type="button" class="btn-open-modal" @click="close" aria-label="Close Modal">Close Modal</button>
+
             </footer>
         </div>
   </transition>
