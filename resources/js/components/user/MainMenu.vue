@@ -7,8 +7,8 @@
         </ul>
     </div>
     <div  v-show="toggle" class="main-sub-menu">
-        <LeftMenuList   />
-        <RightMenuList  />
+        <LeftMenuList   @latestPostOnHoverCategoryName="setLatestPostAsPropsToRightMenuListComponent($event)"/>
+        <RightMenuList :postsByCategory="posts" />
     </div>
     <div class="top-posts">
         <TopPost />
@@ -27,9 +27,15 @@ export default {
     data () {
         return {
             toggle: false,
+            posts:[]
         }
     },
     components: {RightMenuList,LeftMenuList,TopPost},
+    methods:{
+        setLatestPostAsPropsToRightMenuListComponent(posts){
+            this.posts = posts;
+        }
+    }
 }
 </script>
 

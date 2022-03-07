@@ -1,12 +1,21 @@
 <template>
   <div class="left-menu-list-container">
         <ul  ref="category"  class="left-menu-list">
-            <li  v-for="(category,index) in categories" v-bind:key="index"    @mouseover="changeIcon(category,$event)"  @mouseout="hover=false" :class="{ active: hover }"  ><a href="" ><span>{{category}} <i  :class="category == visible ? icon : 'hidden'"></i> </span></a> </li>
+            <li  v-for="(category,index) in categories" v-bind:key="index"
+            @mouseover="changeIcon(category,$event)"
+            @mouseout="hover=false" :class="{ active: hover }">
+                <a href="" >
+                    <span>{{category.name}} <i  :class="category.name == visible ? icon : 'hidden'">
+                    </i> </span>
+                </a>
+            </li>
         </ul>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name:"LeftMenuList",
     components: {
@@ -16,16 +25,32 @@ export default {
                 hover:false,
                 visible:null,
                 displayProperty:'is-visible',
-                categories:['Travel','Fashion','Lifestyle','Beauty'],
+                categories:[],
                 icon:"fa fa-caret-right",
+                latestFourPostsByCategoryId:[]
             }
+        },
+    created() {
+            const token = (localStorage.getItem('access-token'));
+            axios.get('/api/categories')
+                .then(response => {
+                    this.categories = response.data.results;
+                    console.log(this.categories);
+
+                });
         },
     methods: {
       changeIcon: function (category,event) {
-          event.preventDefault();
-           this.hover=true;
-           this.visible=category;
-        console.log(event.target)
+        event.preventDefault();
+        this.hover=true;
+        this.visible=category.name;
+        const token = (localStorage.getItem('access-token'));
+        axios.get('/api/posts-by-category/'+category.id)
+            .then(response => {
+                this.latestFourPostsByCategoryId = response.data.results.slice(0,3);
+                this.$emit('latestPostOnHoverCategoryName', this.latestFourPostsByCategoryId);
+
+            });
       }
     }
 

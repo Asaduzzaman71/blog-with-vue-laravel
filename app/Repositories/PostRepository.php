@@ -6,18 +6,24 @@ use App\Http\Requests\PostRequest;
 use App\Interfaces\PostInterface;
 use App\Traits\ResponseAPI;
 use App\Models\Post;
+use App\Models\PostImage;
 use \Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use App\Traits\FileUpload;
+use Illuminate\Support\Facades\Storage;
+
 
 class PostRepository implements PostInterface
 {
     // Use ResponseAPI Trait in this repository
     use ResponseAPI;
+    // Use FileUpload Trait in this repository
+    use FileUpload;
+
 
     public function getAllPosts()
     {
         try {
-            $posts = Post::all();
+            $posts = Post::with('postImages')->get();
             return $this->success("All Posts", $posts);
         } catch(\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
@@ -28,9 +34,22 @@ class PostRepository implements PostInterface
     {
         try {
             $post = Post::find($id);
-            // Check the user
+            // Check the post
             if(!$post) return $this->error("No post with ID $id", 404);
             return $this->success("Post Detail", $post);
+        } catch(\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function getPostsByCategoryId($id){
+
+        try {
+            $posts = Post::with('postImages')->where('category_id',$id)->latest()->get();
+            // Check the post
+            if( count($posts) > 0 )   return $this->success("Post list", $posts);
+            return $this->error("No post with category ID $id", 404);
+
         } catch(\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -40,21 +59,30 @@ class PostRepository implements PostInterface
     {
         DB::beginTransaction();
         try {
-            // If Post exists when we find it
-            // Then update the Post
-            // Else create the new one.
-            $post = $id ? Post::find($id) : new Post;
 
+            $post = $id ? Post::find($id) : new Post;
             // Check the Post
             if($id && !$post) return $this->error("No post with ID $id", 404);
-
-            $post->name = $request->name;
-            $post->slug = Str::slug($request->name);
-            $post->created_by = auth()->id();
-            $post->updated_by = $id  ? auth()->id() : NULL;
+            $post->category_id = (int)$request->category_id;
+            $post->title = $request->title;
+            //$post->slug = Str::slug($request->title);
+            $post->excerpt = $request->excerpt;
+            $post->content = $request->content;
+            $post->author_id = auth()->id();
             // Save the Post
             $post->save();
 
+            if($request->hasFile('images')){
+                foreach($request->file('images') as $image){
+                    $path = $this->FileUpload($image,'blog');
+                    $postImage = new PostImage();
+                    $postImage->post_id =  $post->id;
+                    $postImage->image =  $path;
+                    $postImage->save();
+                }
+            }
+
+            $post = Post::with('postImages')->where('id',$post->id)->first();
             DB::commit();
             return $this->success(
                 $id ? "Post updated"
@@ -77,9 +105,31 @@ class PostRepository implements PostInterface
 
             // Delete the Post
             $post->delete();
+            $postImages = PostImage::where('post_id',$id)->get();
+            foreach($postImages as $postImage){
+                Storage::disk('public')->delete($postImage->image);
+                $postImage->delete();
+            }
 
             DB::commit();
             return $this->success("Post deleted", $post);
+        } catch(\Exception $e) {
+            DB::rollBack();
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function deletePostImage($id)
+    {
+        DB::beginTransaction();
+        try {
+            $postImage = PostImage::find($id);
+            Storage::disk('public')->delete($postImage->image);
+            if(!$postImage) return $this->error("No post image with ID $id", 404);
+            $postImage->delete();
+
+            DB::commit();
+            return $this->success("Post Image deleted", $postImage);
         } catch(\Exception $e) {
             DB::rollBack();
             return $this->error($e->getMessage(), $e->getCode());

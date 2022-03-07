@@ -153,7 +153,7 @@ export default {
                 })
                 .then(response => {
                     this.categories = response.data.results;
-
+                    console.log(this.categories);
                 });
         },
     methods: {

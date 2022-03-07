@@ -24,13 +24,22 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-
-            // I want to check the name if exists first
-            // If exists, will pass the name for unique validation
-            // This is efficient, rather than we creating another validation for create or update
-            'title' => 'required |unique:posts|max:255',
-            'excerpt' => 'required',
-            'content' => 'required',
+                'title' => 'required |max:255',
+                'category_id' => 'required',
+                'excerpt' => 'required',
+                'content' => 'required',
+                'images'    => 'required|sometimes|array|min:1|max:5',
+                'images.*' => 'required|mimetypes:image/jpeg,image/png,image/bmp|max:2000',
+            ];
+    }
+    public function messages()
+    {
+        return [
+            'category_id.required' => 'Category field is required',
+            'images.required' => 'Please upload one or more images',
+            'images.max' => 'A maximum of five images are allowed',
+            'images.*.mimetypes' => 'Only jpeg,png and bmp images are allowed',
+            'images.*.max' => 'Sorry! Maximum allowed size for an image is 2MB',
         ];
     }
 }

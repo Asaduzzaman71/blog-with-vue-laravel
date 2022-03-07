@@ -13,10 +13,20 @@ class PostController extends Controller
         $this->postInterface = $postInterface;
     }
     public function index(){
-
+        return $this->postInterface->getAllPosts();
     }
     public function store(PostRequest $request){
-      dd($request->all());
+        return $this->postInterface->requestPost($request);
+    }
+    public function update(PostRequest $request, $id){
+        return $this->postInterface->requestPost($request, $id);
+    }
+    public function deleteImage($id){
+        return $this->postInterface->deletePostImage($id);
+    }
+    public function destroy($id)
+    {
+        return $this->postInterface->deletePost($id);
     }
 
 }
